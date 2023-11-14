@@ -1,0 +1,18 @@
+CREATE TRIGGER log_pedido
+AFTER INSERT ON pedidos
+FOR EACH ROW
+BEGIN
+    INSERT INTO log_pedidos (
+        valor,
+        data_pedido,
+        nome_cliente
+    ) VALUES (
+        NEW.valor,
+        NEW.data_pedido,
+        (
+            SELECT nome
+            FROM clientes
+            WHERE id_cliente = NEW.id_cliente
+        )
+    );
+END;
